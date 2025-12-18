@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header với gradient -->
+        <header class="header">
+            <div class="header-content">
+                <div class="date-info">
+                    <span class="date-label" id="dateLabel">📅 THỨ TƯ, 17 THÁNG 12</span>
+                    <h1 class="greeting" id="greeting">Buổi tối vui vẻ!</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="darkModeBtn" title="Chế độ tối (D)">🌙</button>
+                    <button class="icon-btn" id="settingsBtn" title="Cài đặt">⚙️</button>
+                </div>
+            </div>
+            
+            <!-- Progress bar -->
+            <div class="progress-card">
+                <div class="progress-header">
+                    <span class="progress-label">TIẾN ĐỘ HÔM NAY</span>
+                    <span class="progress-count" id="progressCount">0/0 hoàn thành</span>
+                </div>
+                <div class="progress-row">
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                    <span class="trophy">🏆</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Input thêm task -->
+        <div class="add-task-section">
+            <div class="add-task-card">
+                <div class="add-task-input">
+                    <span class="add-icon">+</span>
+                    <input type="text" id="taskInput" placeholder="Thêm việc cần làm... (N)" maxlength="100">
+                    <button class="add-btn" id="addBtn">Thêm</button>
+                </div>
+                <div class="add-task-options">
+                    <div class="option-group">
+                        <label>Ưu tiên:</label>
+                        <select id="prioritySelect">
+                            <option value="low">🟢 Thấp</option>
+                            <option value="medium" selected>🟡 Trung bình</option>
+                            <option value="high">🔴 Cao</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>Deadline:</label>
+                        <input type="date" id="dueDateInput">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search bar -->
+        <div class="search-section">
+            <div class="search-input">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm... (/)" maxlength="50">
+                <button class="clear-search" id="clearSearch" title="Xóa">✕</button>
+            </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">
+                Tất cả <span class="count" id="countAll">0</span>
+            </button>
+            <button class="filter-btn" data-filter="pending">
+                Đang làm <span class="count" id="countPending">0</span>
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                Đã xong <span class="count" id="countCompleted">0</span>
+            </button>
+        </div>
+
+        <!-- Priority filter -->
+        <div class="priority-filter">
+            <button class="priority-btn active" data-priority="all">Tất cả</button>
+            <button class="priority-btn" data-priority="high">🔴 Cao</button>
+            <button class="priority-btn" data-priority="medium">🟡 TB</button>
+            <button class="priority-btn" data-priority="low">🟢 Thấp</button>
+        </div>
+
+        <!-- Danh sách task -->
+        <ul class="task-list" id="taskList">
+            <!-- Tasks sẽ được render bằng JavaScript -->
+        </ul>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState">
+            <span class="empty-icon">📝</span>
+            <p>Chưa có công việc nào</p>
+        </div>
+
+        <!-- Keyboard shortcuts hint -->
+        <div class="shortcuts-hint" id="shortcutsHint">
+            <span>⌨️ Phím tắt: <kbd>N</kbd> Thêm | <kbd>D</kbd> Dark mode | <kbd>/</kbd> Tìm kiếm | <kbd>?</kbd> Trợ giúp</span>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>⚙️ Cài đặt</h2>
+                <button class="modal-close" id="closeSettings">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>Màu chủ đề:</label>
+                    <div class="theme-colors">
+                        <button class="color-btn active" data-color="purple" style="background: linear-gradient(135deg, #667eea, #764ba2)"></button>
+                        <button class="color-btn" data-color="blue" style="background: linear-gradient(135deg, #4facfe, #00f2fe)"></button>
+                        <button class="color-btn" data-color="green" style="background: linear-gradient(135deg, #11998e, #38ef7d)"></button>
+                        <button class="color-btn" data-color="orange" style="background: linear-gradient(135deg, #f5576c, #f093fb)"></button>
+                        <button class="color-btn" data-color="pink" style="background: linear-gradient(135deg, #ff9a9e, #fecfef)"></button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label>Đồng bộ Google Sheets:</label>
+                    <div class="sync-status">
+                        <span id="syncStatus">⚪ Chưa kết nối</span>
+                        <button class="btn-secondary" id="syncNowBtn">🔄 Sync ngay</button>
+                    </div>
+                    <input type="text" id="apiUrlInput" placeholder="Paste URL Apps Script..." class="api-input">
+                    <button class="btn-secondary" id="saveApiBtn">💾 Lưu API URL</button>
+                </div>
+                <div class="setting-item">
+                    <label>Xuất/Nhập dữ liệu:</label>
+                    <div class="export-import">
+                        <button class="btn-secondary" id="exportBtn">📤 Xuất JSON</button>
+                        <button class="btn-secondary" id="importBtn">📥 Nhập JSON</button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;">
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label>Xóa tất cả task đã hoàn thành:</label>
+                    <button class="btn-danger" id="clearCompletedBtn">🗑️ Xóa đã xong</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>⌨️ Phím tắt</h2>
+                <button class="modal-close" id="closeHelp">✕</button>
+            </div>
+            <div class="modal-body">
+                <table class="shortcuts-table">
+                    <tr><td><kbd>N</kbd></td><td>Thêm task mới</td></tr>
+                    <tr><td><kbd>/</kbd></td><td>Tìm kiếm</td></tr>
+                    <tr><td><kbd>D</kbd></td><td>Bật/tắt Dark mode</td></tr>
+                    <tr><td><kbd>Escape</kbd></td><td>Hủy/Đóng</td></tr>
+                    <tr><td><kbd>Enter</kbd></td><td>Lưu khi đang sửa</td></tr>
+                    <tr><td><kbd>?</kbd></td><td>Hiện bảng phím tắt này</td></tr>
+                </table>
+                <p class="tip">💡 Double-click vào task để sửa nội dung</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Config (optional, không commit lên Git) -->
+    <script src="config.js" onerror="console.log('config.js not found, using localStorage')"></script>
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
