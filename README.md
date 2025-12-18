@@ -8,7 +8,6 @@
 
 
 
-};    API_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'    // Paste your Apps Script URL hereconst CONFIG = {// ============================================// ⚠️ File này KHÔNG được commit lên GitỨng dụng To-Do List cá nhân, deploy trên GitHub Pages, hỗ trợ đồng bộ Google Sheets.
 
 ![Preview](https://img.shields.io/badge/Status-Active-success) ![License](https://img.shields.io/badge/License-MIT-blue)
 
@@ -284,3 +283,4 @@ MIT License - Thoải mái sử dụng và chỉnh sửa.
 ---
 
 Made with ❤️ for personal productivity
+
